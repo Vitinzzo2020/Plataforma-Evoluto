@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Cuidado Avançada - Painel do Fisioterapeuta</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; color-adjust: exact; }
+        [contenteditable="true"]:not(.non-editable) { outline: 2px dashed rgba(59, 130, 246, 0.5); padding: 4px; border-radius: 4px; transition: outline 0.2s; }
+        [contenteditable="true"]:focus { outline: 2px solid #3B82F6; background-color: rgba(59, 130, 246, 0.05); }
+        @media print { .no-print { display: none; } [contenteditable="true"] { outline: none; padding: 4px; } }
+        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); border-left-color: #4A90E2; border-radius: 50%; animation: spin 1s linear infinite; width: 24px; height: 24px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .image-upload-trigger { cursor: pointer; }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-6 lg:p-8">
+    <input type="file" id="imageUpload" accept="image/*" class="hidden">
+    
+    <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+        <!-- Cabeçalho -->
+        <header class="bg-gradient-to-r from-blue-700 to-teal-600 p-6 sm:p-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight" contenteditable="true">Plataforma de Evolução</h1>
+                    <p class="text-blue-200 text-sm sm:text-base mt-1" contenteditable="true" id="patientNameHeader">Paciente: Lúcia</p>
+                </div>
+                <div class="bg-white/20 h-24 w-24 rounded-full flex items-center justify-center image-upload-trigger" onclick="triggerImageUpload('logoImage')">
+                     <img id="logoImage" src="uploaded:Capturar.PNG-19bcb0bf-58c0-491b-bb15-fb61dbba4148" class="rounded-full object-contain h-24 w-24 p-1 bg-white">
+                </div>
+            </div>
+        </header>
+        
+        <main id="professional-panel-content">
+            <!-- Informações do Paciente -->
+            <section class="p-6 sm:p-8 border-b border-gray-200">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4" contenteditable="true">Informações da Paciente</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong class="text-gray-600" contenteditable="true">Nome:</strong> <span id="patientNameInfo" class="text-gray-800" contenteditable="true">Lúcia</span></div>
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong class="text-gray-600" contenteditable="true">Idade:</strong> <span class="text-gray-800" contenteditable="true">79 anos</span></div>
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong class="text-gray-600" contenteditable="true">Local:</strong> <span id="patientLocation" class="text-gray-800" contenteditable="true">Residencial para Idosos</span></div>
+                    <div class="bg-gray-50 p-3 rounded-lg"><strong class="text-gray-600" contenteditable="true">Fisioterapeuta:</strong> <span id="physioName" class="text-gray-800" contenteditable="true">Vitor Garavazzo</span></div>
+                    <div class="bg-gray-50 p-3 rounded-lg col-span-full"><strong class="text-gray-600" contenteditable="true">Condições Clínicas:</strong> <span id="clinicalConditions" class="text-gray-800" contenteditable="true">Artroplastia de quadril (não recente), Osteoporose, Histórico de AVC, Fraqueza muscular, Equilíbrio comprometido.</span></div>
+                </div>
+            </section>
+
+            <!-- Tabela de Acompanhamento -->
+            <section class="p-6 sm:p-8"><div class="flex justify-between items-center mb-4"><h2 class="text-xl font-bold text-gray-800" contenteditable="true">Registro de Sessões</h2><button id="addRowButton" class="no-print bg-gray-200 text-gray-700 py-1 px-3 rounded-lg hover:bg-gray-300 transition flex items-center gap-2 text-sm font-semibold"><i class="fas fa-plus"></i> Adicionar Sessão</button></div><div class="overflow-x-auto"><table class="min-w-full text-sm"><thead class="bg-gray-50"><tr><th class="p-3 text-left font-semibold text-gray-600 rounded-tl-lg" contenteditable="true">Data</th><th class="p-3 text-left font-semibold text-gray-600" contenteditable="true">Sinais Vitais</th><th class="p-3 text-left font-semibold text-gray-600" contenteditable="true">Condutas Realizadas</th><th class="p-3 text-left font-semibold text-gray-600 rounded-tr-lg" contenteditable="true">Evolução e Observações</th></tr></thead><tbody id="evolutionTableBody"><tr class="border-b border-gray-200"><td class="p-3 font-medium text-gray-800" contenteditable="true">02/06/2025</td><td class="p-3 text-gray-600" contenteditable="true">125x80 / 72 / 97%</td><td class="p-3 text-gray-600 session-conduct" contenteditable="true">Mobilização articular ativa de quadril e joelho. Exercício de sentar e levantar (3x6). Treino de transferência de peso lateral com apoio.</td><td class="p-3 text-gray-600 observation-cell" contenteditable="true">Paciente colaborativa. Relatou ausência de dor. Cansaço na última série de sentar e levantar. Equilíbrio melhorou com dicas verbais.</td></tr><tr class="bg-gray-50 border-b border-gray-200"><td class="p-3 font-medium text-gray-800" contenteditable="true">04/06/2025</td><td class="p-3 text-gray-600" contenteditable="true">120x78 / 70 / 98%</td><td class="p-3 text-gray-600 session-conduct" contenteditable="true">Marcha estacionária com apoio. Fortalecimento de quadril com elástico (Abdução). Treino de marcha guiada no corredor.</td><td class="p-3 text-gray-600 observation-cell" contenteditable="true">Conseguiu realizar a marcha com passadas mais altas. Mostrou boa contração de glúteos. Manteve-se estável.</td></tr></tbody></table></div></section>
+
+            <!-- Banco de Exercícios -->
+            <section class="p-6 sm:p-8"><div class="flex justify-between items-center mb-4 flex-wrap gap-2"><h2 class="text-xl font-bold text-gray-800" contenteditable="true">Banco de Exercícios</h2><div class="flex gap-2"><button id="generateExercisesButton" class="no-print bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition flex items-center gap-2 text-sm"><i class="fas fa-magic"></i> Sugerir com IA</button><button id="addManualExerciseButton" class="no-print bg-gray-600 text-white py-2 px-4 rounded-lg hover:bg-gray-700 transition flex items-center gap-2 text-sm"><i class="fas fa-plus"></i> Adicionar Manualmente</button></div></div><div id="exercise-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4"><div id="exercise-placeholder" class="col-span-full text-center text-gray-500 py-8">Clique em "Sugerir com IA" ou "Adicionar Manualmente" para montar o plano de exercícios.</div></div></section>
+
+            <!-- Resumo Semanal com IA -->
+            <section class="p-6 sm:p-8 bg-teal-50/60"><div class="flex justify-between items-center mb-4"><h2 class="text-xl font-bold text-teal-900" contenteditable="true">Análise de Progresso com IA</h2><button id="generateSummaryButton" class="no-print bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition flex items-center gap-2 text-sm"><i class="fas fa-chart-line"></i> Gerar Análise</button><div id="summarySpinner" class="spinner hidden"></div></div><div id="ai-summary-container" class="text-teal-800 text-sm space-y-4"><p id="summary-text" contenteditable="true">Clique no botão "Gerar Análise" para criar um resumo e sugestões de metas.</p><div><strong class="text-teal-900" contenteditable="true">Metas Sugeridas pela IA:</strong><ul id="goals-list" class="list-disc list-inside mt-1"><li contenteditable="true">Aguardando análise da IA...</li></ul></div></div></section>
+        </main>
+        
+        <!-- Ação Principal -->
+        <section class="p-8 bg-gray-800 text-white text-center">
+            <h2 class="text-2xl font-bold mb-2">Plataforma Pronta para Partilhar</h2>
+            <p class="text-gray-300 mb-4 text-sm max-w-2xl mx-auto">Após preencher e editar as informações, clique no botão abaixo para gerar um **site interativo** para a família e equipa de cuidadores, acessível por link ou QR Code.</p>
+            <button id="generateLinkButton" class="no-print bg-indigo-500 text-white font-bold py-3 px-8 rounded-lg hover:bg-indigo-600 transition-transform transform hover:scale-105 text-base"><i class="fas fa-rocket"></i> Gerar Portal de Evolução</button>
+        </section>
+
+        <!-- Rodapé -->
+        <footer class="p-6 text-center"><div class="border-t pt-4"><p class="text-sm text-gray-600" contenteditable="true" id="signature-line">_________________________________________</p><p class="text-sm font-semibold text-gray-800 mt-1" contenteditable="true" id="physioNameFooter">Vitor Garavazzo</p><p class="text-xs text-gray-500" contenteditable="true" id="crefitoFooter">Fisioterapeuta Responsável | CREFITO: [Número]</p></div></footer>
+    </div>
+    
+    <!-- Modais -->
+    <div id="shareModal" class="no-print fixed inset-0 bg-gray-600 bg-opacity-75 overflow-y-auto h-full w-full hidden z-50"><div class="relative top-10 mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white"><div class="mt-3 text-center"><div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100"><i class="fas fa-check text-2xl text-green-600"></i></div><h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">Portal de Evolução Gerado!</h3><div class="mt-2 px-7 py-3"><p class="text-sm text-gray-500">Partilhe o portal através do link ou do QR Code abaixo.</p><div class="my-4"><canvas id="qrCodeCanvas" class="mx-auto border p-1"></canvas></div><textarea id="portalLink" readonly class="w-full p-2 mt-2 text-xs bg-gray-100 rounded border border-gray-300"></textarea></div><div class="items-center px-4 py-3 gap-3 flex"><button id="copyLinkButton" class="w-full px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-600">Copiar Link</button><button id="closeShareModal" class="w-full px-4 py-2 bg-gray-200 text-gray-800 text-base font-medium rounded-md shadow-sm hover:bg-gray-300">Fechar</button></div></div></div></div>
+    <div id="errorModal" class="no-print fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50"><div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"><div class="mt-3 text-center"><div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100"><svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><h3 class="text-lg leading-6 font-medium text-gray-900 mt-2">Ocorreu um Erro</h3><div class="mt-2 px-7 py-3"><p id="errorMessage" class="text-sm text-gray-500"></p></div><div class="items-center px-4 py-3"><button id="closeErrorModal" class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600">Fechar</button></div></div></div></div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <script>
+        const dom = {
+            summarySpinner: document.getElementById('summarySpinner'), summaryText: document.getElementById('summary-text'), goalsList: document.getElementById('goals-list'), evolutionTableBody: document.getElementById('evolutionTableBody'), exerciseContainer: document.getElementById('exercise-container'), exercisePlaceholder: document.getElementById('exercise-placeholder'), shareModal: document.getElementById('shareModal'), portalLink: document.getElementById('portalLink'), qrCodeCanvas: document.getElementById('qrCodeCanvas'), copyLinkButton: document.getElementById('copyLinkButton'), errorModal: document.getElementById('errorModal'), errorMessage: document.getElementById('errorMessage'), imageUploadInput: document.getElementById('imageUpload'),
+            buttons: {
+                generateSummary: document.getElementById('generateSummaryButton'), addRow: document.getElementById('addRowButton'), generateExercises: document.getElementById('generateExercisesButton'), addManualExercise: document.getElementById('addManualExerciseButton'), generateLink: document.getElementById('generateLinkButton'), closeShare: document.getElementById('closeShareModal'), closeError: document.getElementById('closeErrorModal'),
+            }
+        };
+
+        let currentImageElementId = null;
+        
+        const predefinedImages = { 'ponte': 'https://i.imgur.com/7b2a61B.png', 'glúteo': 'https://i.imgur.com/7b2a61B.png', 'agachamento': 'https://i.imgur.com/aThA2DL.png', 'sentar e levantar': 'https://i.imgur.com/aThA2DL.png', 'marcha': 'https://i.imgur.com/So4a8y2.png', 'caminhar': 'https://i.imgur.com/So4a8y2.png', 'equilíbrio': 'https://i.imgur.com/1C3dGNA.png', 'transferência': 'https://i.imgur.com/1C3dGNA.png', 'abdução': 'https://i.imgur.com/1C3dGNA.png', 'panturrilha': 'https://i.imgur.com/tYx4n1I.png', 'calcanhar': 'https://i.imgur.com/tYx4n1I.png', 'clamshell': 'https://i.imgur.com/BFL5c3f.png', 'extensão de joelho': 'https://i.imgur.com/pQUW0h1.png', 'ombro': 'https://i.imgur.com/s6z4e2A.png', 'default': 'https://i.imgur.com/gJ9e5jQ.png' };
+
+        Object.values(dom.buttons).forEach(button => button?.addEventListener('click', handleButtonClick));
+        dom.imageUploadInput.addEventListener('change', handleImageUpload);
+
+        function handleButtonClick(e) { const id = e.currentTarget.id; switch(id) { case 'generateSummaryButton': handleGenerateSummary(); break; case 'generateExercisesButton': handleGenerateExercises(); break; case 'addRowButton': handleAddRow(); break; case 'addManualExerciseButton': addManualExerciseCard(); break; case 'generateLinkButton': handleGenerateLink(); break; case 'closeShareModal': dom.shareModal.classList.add('hidden'); break; case 'closeErrorModal': dom.errorModal.classList.add('hidden'); break; } }
+        function handleAddRow() { const newRow = document.createElement('tr'); const isEven = dom.evolutionTableBody.rows.length % 2 === 0; newRow.className = `border-b border-gray-200 ${isEven ? '' : 'bg-gray-50'}`; newRow.innerHTML = `<td class="p-3 font-medium text-gray-400 italic" contenteditable="true">[Data]</td><td class="p-3 text-gray-600" contenteditable="true"></td><td class="p-3 text-gray-600 session-conduct" contenteditable="true"></td><td class="p-3 text-gray-600 observation-cell" contenteditable="true"></td>`; dom.evolutionTableBody.appendChild(newRow); }
+        async function handleGenerateSummary() { setLoading(dom.summarySpinner, dom.buttons.generateSummary, true); const observations = getObservationsFromTable(); if (observations.length === 0) { showError("Não há observações na tabela para analisar."); setLoading(dom.summarySpinner, dom.buttons.generateSummary, false); return; } const prompt = createSummaryPrompt(observations); try { const result = await callGeminiAPI(prompt, { "resumo": { "type": "STRING" }, "metas": { "type": "ARRAY", "items": { "type": "STRING" } } }, ["resumo", "metas"]); updateSummaryUI(result); } catch (error) { showError(`Falha na IA ao gerar resumo: ${error.message}`); } finally { setLoading(dom.summarySpinner, dom.buttons.generateSummary, false); } }
+        async function handleGenerateExercises() { if (dom.exercisePlaceholder) dom.exercisePlaceholder.style.display = 'none'; dom.exerciseContainer.innerHTML = '<div class="col-span-full flex justify-center items-center py-8"><div class="spinner"></div></div>'; const observations = getObservationsFromTable(); if (observations.length === 0) { showError("Preencha as observações para sugerir exercícios."); dom.exerciseContainer.innerHTML = '<div id="exercise-placeholder" class="col-span-full text-center text-gray-500 py-8">Preencha as observações para receber sugestões.</div>'; return; } const prompt = createExercisePrompt(observations); try { const exerciseData = await callGeminiAPI(prompt, { "exercicios": { "type": "ARRAY", "items": { "type": "OBJECT", "properties": { "nome_exercicio": { "type": "STRING" }, "descricao": { "type": "STRING" }, "objetivo": { "type": "STRING" } }, "required": ["nome_exercicio", "descricao", "objetivo"] } } }, ["exercicios"]); if (!exerciseData.exercicios || exerciseData.exercicios.length === 0) throw new Error("A IA não retornou sugestões de exercícios."); updateExercisesUI(exerciseData.exercicios); } catch (error) { showError(`Falha na IA ao gerar exercícios: ${error.message}`); dom.exerciseContainer.innerHTML = '<div id="exercise-placeholder" class="col-span-full text-center text-gray-500 py-8">Ocorreu um erro ao gerar exercícios.</div>'; } }
+        function handleGenerateLink() { const data = { logoSrc: document.getElementById('logoImage').src, patientName: document.getElementById('patientNameInfo').textContent, physioName: document.getElementById('physioName').textContent, clinicalConditions: document.getElementById('clinicalConditions').textContent, summary: dom.summaryText.textContent, goals: Array.from(dom.goalsList.querySelectorAll('li')).map(li => li.textContent), sessions: Array.from(dom.evolutionTableBody.querySelectorAll('tr')).map(row => ({ date: row.cells[0].textContent, activities: row.cells[2].textContent, observations: row.cells[3].textContent })), exercises: Array.from(dom.exerciseContainer.querySelectorAll('.exercise-card')).map(card => ({ imgSrc: card.querySelector('img')?.src, name: card.querySelector('h4').textContent, objective: card.querySelector('p:nth-of-type(1)').textContent, description: card.querySelector('p:last-of-type').textContent })) }; const familyPortalHtml = generateFamilyPortalHtml(data); const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(familyPortalHtml); dom.portalLink.value = dataUrl; new QRious({ element: dom.qrCodeCanvas, value: dataUrl, size: 150, background: 'white', foreground: 'black' }); dom.shareModal.classList.remove('hidden'); }
+        window.triggerImageUpload = (elementId) => { currentImageElementId = elementId; dom.imageUploadInput.click(); };
+        function handleImageUpload(event) { const file = event.target.files[0]; if (file && currentImageElementId) { const reader = new FileReader(); reader.onload = (e) => { const imgElement = document.getElementById(currentImageElementId); if (imgElement) { imgElement.src = e.target.result; } currentImageElementId = null; }; reader.onerror = () => { showError("Não foi possível ler o ficheiro da imagem."); currentImageElementId = null; }; reader.readAsDataURL(file); } dom.imageUploadInput.value = ''; }
+        function addManualExerciseCard() { if (dom.exercisePlaceholder) dom.exercisePlaceholder.style.display = 'none'; const cardId = `card-${Date.now()}`; const imgId = `img-${cardId}`; const card = document.createElement('div'); card.className = "exercise-card bg-white rounded-lg shadow-md p-4 flex flex-col gap-3"; card.innerHTML = `<div class="w-full h-40 bg-gray-100 rounded-md flex justify-center items-center image-upload-trigger" onclick="triggerImageUpload('${imgId}')"><img id="${imgId}" src="https://i.imgur.com/gJ9e5jQ.png" class="w-full h-full object-contain rounded-md" onerror="this.src='https://i.imgur.com/gJ9e5jQ.png'"></div><h4 class="font-bold text-gray-800" contenteditable="true">[Nome do Exercício]</h4><p class="text-xs text-gray-500" contenteditable="true"><strong class="text-gray-600">Objetivo:</strong> [Descrever o objetivo]</p><p class="text-xs text-gray-600" contenteditable="true">[Descrever como fazer]</p>`; dom.exerciseContainer.appendChild(card); }
+        function getObservationsFromTable() { const cells = document.querySelectorAll('#evolutionTableBody .observation-cell'); const observations = []; cells.forEach(cell => { const text = cell.textContent.trim(); if (text && text !== '[Data]') observations.push(text); }); return observations; }
+        function createSummaryPrompt(observations) { const text = observations.map((o, i) => `Dia ${i+1}: ${o}`).join('\n'); return `Como fisioterapeuta geriátrico, analise a evolução de uma paciente de 79 anos (pós-artroplastia de quadril, AVC, osteoporose): ${text}. Gere um JSON com "resumo" (parágrafo) e "metas" (array de 2-3 strings) para a próxima semana. Apenas o JSON.`; }
+        function createExercisePrompt(observations) { const text = observations.map((o, i) => `Dia ${i+1}: ${o}`).join('\n'); return `Como fisioterapeuta, para uma paciente de 79 anos (artroplastia de quadril, AVC, osteoporose) com a evolução (${text}), gere um JSON com a chave "exercicios" contendo uma lista de 3 objetos. Cada objeto deve ter: "nome_exercicio", "descricao" (como fazer) e "objetivo" (o que melhora). Apenas o JSON.`; }
+        async function callGeminiAPI(prompt, schema, required) { const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json", responseSchema: { type: "OBJECT", properties: schema, required: required } } }; const apiKey = ""; const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`; const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); if (!response.ok) throw new Error(`API Error: ${response.status}`); const result = await response.json(); if (result.candidates?.[0]?.content?.parts?.[0]) return JSON.parse(result.candidates[0].content.parts[0].text); throw new Error("Resposta da API em formato inesperado."); }
+        function updateSummaryUI(analysis) { dom.summaryText.textContent = analysis.resumo || "Não foi possível gerar resumo."; dom.goalsList.innerHTML = ''; (analysis.metas || []).forEach(goal => { const li = document.createElement('li'); li.setAttribute('contenteditable', 'true'); li.textContent = goal; dom.goalsList.appendChild(li); }); if (!analysis.metas?.length) { const li = document.createElement('li'); li.setAttribute('contenteditable', 'true'); li.textContent = "Nenhuma meta específica foi sugerida."; dom.goalsList.appendChild(li); } }
+        function getPredefinedImage(exerciseName) { const name = exerciseName.toLowerCase(); for (const key in predefinedImages) { if (name.includes(key)) return predefinedImages[key]; } return predefinedImages['default']; }
+        function updateExercisesUI(exercises) { if (dom.exercisePlaceholder) dom.exercisePlaceholder.style.display = 'none'; dom.exerciseContainer.innerHTML = ''; exercises.forEach(exercise => { const cardId = `card-${Date.now()}-${Math.random()}`; const imgId = `img-${cardId}`; const predefinedImgSrc = getPredefinedImage(exercise.nome_exercicio); const card = document.createElement('div'); card.className = "exercise-card bg-white rounded-lg shadow-md p-4 flex flex-col gap-3"; card.innerHTML = `<div class="w-full h-40 bg-gray-100 rounded-md flex justify-center items-center image-upload-trigger" onclick="triggerImageUpload('${imgId}')"><img id="${imgId}" src="${predefinedImgSrc}" class="w-full h-full object-contain rounded-md" onerror="this.src='${predefinedImages['default']}'"></div><h4 class="font-bold text-gray-800" contenteditable="true">${exercise.nome_exercicio}</h4><p class="text-xs text-gray-500" contenteditable="true"><strong class="text-gray-600">Objetivo:</strong> ${exercise.objetivo}</p><p class="text-xs text-gray-600" contenteditable="true">${exercise.descricao}</p>`; dom.exerciseContainer.appendChild(card); }); }
+        function copyLinkToClipboard() { dom.portalLink.select(); document.execCommand('copy'); dom.copyLinkButton.textContent = 'Copiado!'; setTimeout(() => { dom.copyLinkButton.textContent = 'Copiar Link'; }, 2000); }
+        function setLoading(spinner, button, isLoading) { spinner.classList.toggle('hidden', !isLoading); button.classList.toggle('hidden', isLoading); }
+        function showError(message) { dom.errorMessage.textContent = message; dom.errorModal.classList.remove('hidden'); }
+        function generateFamilyPortalHtml(data) {
+            const sessionsHtml = data.sessions.map(session => `<div class="bg-white p-6 rounded-xl shadow-lg mb-4 border-l-4 border-blue-500"><p class="font-bold text-gray-800 mb-3 text-lg flex items-center gap-3"><i class="fas fa-calendar-check text-blue-500"></i>Sessão de ${session.date}</p><div class="text-sm space-y-3 pl-1"><p><strong class="font-semibold text-gray-700">Atividades Realizadas:</strong><br><span class="text-gray-600">${session.activities.replace(/\n/g, '<br>')}</span></p><p><strong class="font-semibold text-gray-700">Observações do Fisioterapeuta:</strong><br><span class="text-gray-600">${session.observations.replace(/\n/g, '<br>')}</span></p></div></div>`).join('');
+            const exercisesHtml = data.exercises.map(exercise => `<div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col"><div class="w-full h-48 bg-gray-200 flex justify-center items-center"><img src="${exercise.imgSrc}" class="w-full h-full object-cover" onerror="this.src='https://i.imgur.com/gJ9e5jQ.png'"></div><div class="p-5 flex flex-col flex-grow"><h4 class="font-bold text-gray-800 text-base">${exercise.name}</h4><p class="text-sm text-gray-600 mt-2 flex-grow">${exercise.objective}</p></div></div>`).join('');
+            const goalsHtml = data.goals.map(goal => `<li class="flex items-start gap-3 p-3 bg-teal-50/50 rounded-lg"><i class="fas fa-bullseye text-teal-500 mt-1"></i><span>${goal}</span></li>`).join('');
+            const conditionsHtml = data.clinicalConditions.split(',').map(c => `<span class="bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">${c.trim()}</span>`).join('');
+
+            return `<!DOCTYPE html><html lang="pt-BR">
+            <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Plataforma de Evolução | ${data.patientName}</title><script src="https://cdn.tailwindcss.com"><\/script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"><style>body{font-family:'Inter',sans-serif; background-color: #f8f9fa;}</style></head>
+            <body class="p-4 sm:p-8">
+                <div class="max-w-4xl mx-auto">
+                    <header class="text-center mb-12">
+                         <h1 class="text-4xl sm:text-5xl font-bold text-gray-800 tracking-tight">Plataforma de Evolução Fisioterapêutica</h1>
+                         <p class="text-gray-500 mt-2">Fisioterapeuta: <strong class="text-blue-600">${data.physioName}</strong></p>
+                    </header>
+                    <div class="bg-white p-6 rounded-xl shadow-lg mb-8 z-10 relative">
+                         <h2 class="text-3xl font-bold text-gray-800 text-center">Acompanhamento da Sra. ${data.patientName}</h2>
+                    </div>
+
+                    <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-3"><i class="fas fa-notes-medical text-blue-500"></i> Contexto Clínico e Foco Terapêutico</h3>
+                        <p class="text-gray-600 mb-6">Este plano de cuidado foi desenhado especificamente para a Sra. Lúcia, considerando as suas condições de saúde para garantir uma recuperação segura e eficaz. O nosso foco está em melhorar a sua qualidade de vida, força e independência.</p>
+                        <div class="flex flex-wrap gap-2">${conditionsHtml}</div>
+                    </section>
+                    
+                    <section class="bg-white p-8 rounded-xl shadow-lg mb-8">
+                        <h3 class="text-2xl font-bold text-teal-700 mb-4 flex items-center gap-3"><i class="fas fa-clipboard-check"></i> Resumo do Progresso da Semana</h3>
+                        <p class="text-gray-600">${data.summary}</p>
+                    </section>
+
+                    <section class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center gap-3"><i class="fas fa-history"></i> Diário das Sessões</h3>
+                        <div class="space-y-6">${sessionsHtml}</div>
+                    </section>
+
+                    <section class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center gap-3"><i class="fas fa-dumbbell"></i> Exercícios Realizados na Sessão</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${exercisesHtml}</div>
+                    </section>
+                    
+                    <section class="bg-gradient-to-r from-teal-500 to-green-500 text-white p-8 rounded-xl shadow-lg mb-8">
+                        <h3 class="text-2xl font-bold mb-4 flex items-center gap-3"><i class="fas fa-bullseye"></i> Metas e Próximos Passos</h3>
+                        <p class="text-teal-100 mb-4">Com base na evolução desta semana, estes são os nossos focos para as próximas sessões:</p>
+                        <ul class="space-y-3">${goalsHtml}</ul>
+                    </section>
+
+                    <footer class="pt-8 mt-4 text-center text-xs text-gray-500">
+                        <p>Plataforma de Cuidado desenvolvida com <i class="fas fa-heart text-red-500"></i> por ${data.physioName}.</p>
+                        <p>A tecnologia a serviço do cuidado e da recuperação.</p>
+                    </footer>
+                </div>
+            </body></html>`;
+        }
+    </script>
+</body>
+</html>
